@@ -16,3 +16,83 @@
         }
     }
 }
+
+.main{
+    >.typeListInfo{
+        position: fixed;
+        >ul{
+            margin-top: 30px;
+            >li{
+                &.active{
+                    border-radius: 4px;
+                    background-color: #ed4040;
+                    >a{
+                        color: #fff;
+                    }
+                }
+                &:hover{
+                    border-radius: 4px;
+                    background-color: #ed4040;
+                    >a{
+                        color: #fff;
+                    }
+                }
+                >a{
+                    display: block;
+                    width: 110px;
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    color: #444;
+                    border-radius: 4px;
+                    margin-bottom: 2px;
+                    transition-property: color,background-color;
+                }
+            }
+        }
+    }
+    >.content{
+        margin: 0 30px 0 140px;
+        width: 660px;
+        >.swiper{
+            height: 300px;
+            background-color: red;
+            >.ant-carousel{
+                height: 300px;
+                >.slick-slider{
+                    height: 300px;
+                    >.slick-list{
+                        >.slick-track{
+                            >.slick-slide{
+                                >div{
+                                    >div{
+                                        >a{
+                                            position: relative;
+                                            >img{
+                                                height: 299px;
+                                            }
+                                            >h2{
+                                                position: absolute;
+                                                height: 44px;
+                                                line-height: 44px;
+                                                white-space: nowrap;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                padding-left: 22px;
+                                                color: #fff;
+                                                font-size: 20px;
+                                                font-weight: 700;
+                                                bottom: 0;
+                                                left: 10px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

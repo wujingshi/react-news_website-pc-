@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
 import { Spin, Alert } from 'antd';
+import { Carousel } from 'antd';
 import {
   BrowserRouter as Router,
   Route,
@@ -14,18 +15,19 @@ class App extends Component {
     super();
     // 初始化数据存储，类似于vue的data；
     this.state={
-      name:'哈哈哈',
       isLoding:true,
-      typeList:[]
+      typeList:[],
+      topList:[],
+      userSelct:0
     }
   }
 
 
   // 生命周期
   componentWillMount(){
-    // 获取类型
-    let newType=api.getNewTypeList();
     let _this=this;
+    // 获取新闻类型
+    let newType=api.getNewTypeList();
     newType.then(res=>{
         let typeList=res.data.result.result;
         let newTypeList=[];
@@ -82,7 +84,22 @@ class App extends Component {
           typeList:newTypeList
         })
     })
+    // 获取头条
+    let newTop=api.getNewTopInfo();
+    newTop.then(res=>{
+      let topList=res.data.result.result.list;
+      console.log(topList)
+      // 数据二次处理
+      topList.forEach(element => {
+        
+      });
+      // 加载判断
+      _this.setState({
+        topList:topList
+      })
+    })
   }
+  
   
   
 
@@ -101,26 +118,44 @@ class App extends Component {
       }else{
         return (
           <Router>
-        <div>
-            <div className="header">
-                <Row>
-                  <Col span={12}>厦门：晴 20°/30°</Col>
-                  <Col span={12}>侵权投诉</Col>
-                </Row>
-            </div>
-            <div className="main w">
-                <aside>
-                  <ul>
-                    {
-                      this.state.typeList.map((item,i)=>{
-                          return <li>
-                            < Link to={item.link}>{item.name}</Link>
-                          </li>
-                      })
-                    }
-                  </ul>
-                </aside>
-            </div>
+          <div>
+              <div className="header">
+                  <Row>
+                    <Col span={12}>厦门：晴 20°/30°</Col>
+                    <Col span={12}>侵权投诉</Col>
+                  </Row>
+              </div>
+              <div className="main w">
+              {/* 左侧菜单 */}
+                  <aside className="typeListInfo">
+                    <ul>
+                      {
+                        this.state.typeList.map((item,i)=>{
+                            return <li key={i} className={this.state.userSelct==i?'active':' '}>
+                              < Link to={item.link}>{item.name}</Link>
+                            </li>
+                        })
+                      }
+                    </ul>
+                  </aside>
+                  <div className="content">
+                      {/* 轮播图 */}
+                      <div className="swiper">
+                        <Carousel vertical autoplay>
+                          {
+                            this.state.topList.map((item,i)=>{
+                              return <div key={i}>
+                                <Link to='/'>
+                                  <img src={item.pic}></img>
+                                  <h2>{item.title}</h2>
+                                </Link>
+                              </div>
+                            })
+                          }
+                        </Carousel>
+                      </div>
+                  </div>
+              </div>
           </div>
         </Router>
         )

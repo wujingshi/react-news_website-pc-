@@ -14,8 +14,19 @@ app.all('*',(req,res,next)=>{
     next();
 });
 
+// 获取新闻类型
 app.get('/newType',(req,res)=>{
     const url ='https://way.jd.com/jisuapi/channel?appkey=30426c00452566d49f1a4f5f12c94c22';
+
+    //找豆瓣服务器要数据
+    request(url, function (error, response, body) {
+        res.setHeader("Content-Type","application/json;charset=utf-8")
+        res.end(body)
+    })
+})
+// 获取头条新闻
+app.get('/newInfoList',(req,res)=>{
+    const url ='https://way.jd.com/jisuapi/get?channel=%E5%A4%B4%E6%9D%A1&num=5&start=0&appkey=30426c00452566d49f1a4f5f12c94c22';
 
     //找豆瓣服务器要数据
     request(url, function (error, response, body) {

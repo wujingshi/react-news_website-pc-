@@ -17,6 +17,19 @@ export default {
         });
 
         return promise;
+    },
+    // 获取新闻详情
+    getNewTopInfo(){
+        const promise = new Promise(function(resolve, reject) {
+            const url='http://127.0.0.1:8088/newInfoList'
+            axios.get(url).then(res=>{
+                resolve(res);
+            }).catch(err=>{
+                reject(err);
+            })
+        });
+
+        return promise;
     }
 
 }
