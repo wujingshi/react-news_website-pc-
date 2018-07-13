@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
-import { Spin, Alert } from 'antd';
-import { Carousel } from 'antd';
+import { Row, Col,Spin, Alert,Input,Calendar } from 'antd';
+
 import {
   BrowserRouter as Router,
   Route,
   Link
 } from 'react-router-dom';
 import api from './server/api'
+
+const Search = Input.Search;
+
 
 class App extends Component {
 
@@ -18,7 +20,7 @@ class App extends Component {
       isLoding:true,
       typeList:[],
       topList:[],
-      userSelct:0
+      userSelct:0,
     }
   }
 
@@ -84,21 +86,17 @@ class App extends Component {
           typeList:newTypeList
         })
     })
-    // 获取头条
-    let newTop=api.getNewTopInfo();
+    // 获取新闻内容
+    let newTop=api.getNewTopInfo('新闻');
     newTop.then(res=>{
       let topList=res.data.result.result.list;
-      console.log(topList)
-      // 数据二次处理
-      topList.forEach(element => {
-        
-      });
       // 加载判断
       _this.setState({
         topList:topList
       })
     })
   }
+
   
   
   
@@ -139,20 +137,38 @@ class App extends Component {
                     </ul>
                   </aside>
                   <div className="content">
-                      {/* 轮播图 */}
-                      <div className="swiper">
-                        <Carousel vertical autoplay>
-                          {
-                            this.state.topList.map((item,i)=>{
-                              return <div key={i}>
-                                <Link to='/'>
-                                  <img src={item.pic}></img>
-                                  <h2>{item.title}</h2>
-                                </Link>
-                              </div>
-                            })
-                          }
-                        </Carousel>
+                      <ul>
+                        {
+                          this.state.topList.map((item,i)=>{
+                              return <li key={i} className={this.state.userSelct==i?'active':' '}>
+                                <a href={item.weburl}>
+                                    <img src={item.pic||'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531460565316&di=28a3cc57e70a1d0113d5750820a52748&imgtype=0&src=http%3A%2F%2Fimg.sc115.com%2Fuploads%2Fshows%2F150317%2F201503171175.jpg'}></img>
+                                    <div className="rightText clearfix">
+                                      <h2>{item.title}</h2>
+                                      <div>
+                                        <span>{item.src}</span>
+                                        <span>{item.time}</span>
+                                      </div>
+                                    </div>
+                                </a>
+                              </li>
+                          })
+                        }
+                      </ul>
+                  </div>
+                  <div className="rightType">
+                      <div className="top">
+                        <Search
+                          placeholder="输入关键字查找你想要的新闻吧"
+                          enterButton="搜索"
+                          size="large"
+                          onSearch={value => console.log(value)}
+                        />
+                      </div>
+                      <div className="dateInfo">
+                          <div style={{ width: 300, border: '1px solid #d9d9d9', borderRadius: 4,margin: 20,background:'#fff' }}>
+                          <Calendar fullscreen={false}/>
+                        </div>
                       </div>
                   </div>
               </div>

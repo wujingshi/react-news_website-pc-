@@ -26,7 +26,11 @@ app.get('/newType',(req,res)=>{
 })
 // 获取头条新闻
 app.get('/newInfoList',(req,res)=>{
-    const url ='https://way.jd.com/jisuapi/get?channel=%E5%A4%B4%E6%9D%A1&num=5&start=0&appkey=30426c00452566d49f1a4f5f12c94c22';
+    const type=req.query.type;
+    // const starInfo=req.query.starnum;
+    // const numInfo=req.query.num;
+    // const url ='https://way.jd.com/jisuapi/get?channel='+type+'&num='+numInfo+'&start='+starInfo+'&appkey=30426c00452566d49f1a4f5f12c94c22';
+    const url ='https://way.jd.com/jisuapi/get?channel='+type+'&num=100&start=0&appkey=30426c00452566d49f1a4f5f12c94c22';
 
     //找豆瓣服务器要数据
     request(url, function (error, response, body) {
