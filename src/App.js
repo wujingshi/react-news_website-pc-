@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col,Spin, Alert,Input,Calendar } from 'antd';
+import { Row, Col,Spin, Alert,Input,Calendar,BackTop  } from 'antd';
 
 import {
   BrowserRouter as Router,
@@ -32,58 +32,10 @@ class App extends Component {
     let newType=api.getNewTypeList();
     newType.then(res=>{
         let typeList=res.data.result.result;
-        let newTypeList=[];
-        // 数据二次处理
-        typeList.forEach(element => {
-          switch (element) {
-            case '头条':
-                newTypeList.push({name:element,link:'/toutiao'})
-                break;
-            case '新闻':
-                newTypeList.push({name:element,link:'/xinwen'})
-                break;
-            case '财经':
-                newTypeList.push({name:element,link:'/caijing'})
-                break;
-            case '体育':
-                newTypeList.push({name:element,link:'/tiyu'})
-                break;
-            case '娱乐':
-                newTypeList.push({name:element,link:'/yule'})
-                break;
-            case '军事':
-                newTypeList.push({name:element,link:'/junshi'})
-                break;
-            case '教育':
-                newTypeList.push({name:element,link:'/jiaoyu'})
-                break;
-            case '科技':
-                newTypeList.push({name:element,link:'/keji'})
-                break;
-            case 'NBA':
-                newTypeList.push({name:element,link:'/nba'})
-                break;
-            case '股票':
-                newTypeList.push({name:element,link:'/gupiao'})
-                break;
-            case '星座':
-                newTypeList.push({name:element,link:'/xingzuo'})
-                break;
-            case '女性':
-                newTypeList.push({name:element,link:'/nvxing'})
-                break;
-            case '健康':
-                newTypeList.push({name:element,link:'/jiankang'})
-                break;
-            case '育儿':
-                newTypeList.push({name:element,link:'/yuer'})
-                break;
-          }
-        });
         // 加载判断
         _this.setState({
           isLoding:false,
-          typeList:newTypeList
+          typeList:typeList
         })
     })
     // 获取新闻内容
@@ -97,9 +49,6 @@ class App extends Component {
     })
   }
 
-  
-  
-  
 
 
   render() {
@@ -129,8 +78,8 @@ class App extends Component {
                     <ul>
                       {
                         this.state.typeList.map((item,i)=>{
-                            return <li key={i} className={this.state.userSelct==i?'active':' '}>
-                              < Link to={item.link}>{item.name}</Link>
+                            return <li key={i} className={this.state.userSelct==i?'active':' '} onClick={()=>this.getNewListInfo(item,i)}>
+                              <a href="javascript:;">{item}</a>
                             </li>
                         })
                       }
@@ -170,13 +119,41 @@ class App extends Component {
                           <Calendar fullscreen={false}/>
                         </div>
                       </div>
+                      <div className="gonggao">
+                          <div className="info">
+                            <h3>页面说明</h3>
+                            <p>本人自学react第一个项目，目的在于了解react一些基础的东西，希望对你也有帮助。</p>
+                          </div>
+                      </div>
                   </div>
               </div>
+              {/* 返回顶部 */}
+              <BackTop />
+                  Scroll down to see the bottom-right
+              <strong style={{ color: 'rgba(64, 64, 64, 0.6)' }}> gray </strong>
           </div>
         </Router>
         )
       }
   }
+
+  getNewListInfo(name,id){
+    console.log(name)
+    console.log(id)
+      let _this=this;
+      let newList=api.getNewTopInfo(name);
+      newList.then(res=>{
+            let topList=res.data.result.result.list;
+          // 加载判断
+          _this.setState({
+            topList:topList,
+            userSelct:id
+          })
+      })
+  }
+
+
+
 }
 
 export default App;
